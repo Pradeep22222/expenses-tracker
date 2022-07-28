@@ -1,6 +1,10 @@
 import express from "express";
 const router = express.Router();
-import { addTransaction } from "../models/transaction/TransactionModel.js";
+import {
+  addTransaction,
+  getTransactions,
+  deleteTransaction,
+} from "../models/transaction/TransactionModel.js";
 router.post("/", async (req, res, next) => {
   try {
     console.log(req.body);
@@ -20,11 +24,45 @@ router.post("/", async (req, res, next) => {
 });
 router.get("/", async (req, res, next) => {
   try {
-    const { authorization } = await req.headers;
+    const { authorization } = req.headers;
     console.log(authorization);
+    const filter = {
+      userId: authorization,
+    };
+    console.log(authorization);
+    const trans = (await getTransactions(filter)) || [];
+    console.log(trans);
     res.json({
-      stats: "success",
-      message: "todo",
+      status: "success",
+      message: "here are the transactions",
+      trans,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+router.delete("/:_id", async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+    const { _id } = req.params;
+    if (authorization && _id) {
+      const filter = {
+        userId: authorization,
+        _id,
+      };
+      const result = await deleteTransaction(filter);
+
+      if (result._id) {
+        return res.json({
+          status: "success",
+          message: "the transaction is deleted",
+        });
+      }
+    }
+
+    res.json({
+      status: "error",
+      message: "Unable to deleted",
     });
   } catch (error) {
     next(error);
