@@ -1,0 +1,40 @@
+## api test
+GET http://localhost:8000/api/v1
+###APIS 
+
+### Post new user
+POST http://localhost:8000/api/v1/user
+Content-Type: application/json
+
+{
+    "firstName":"Pradeep",
+    "lastName":"Dhital",
+    "email":"pradeepdhital0sfd01dfs@gmail.com",
+    "password":"dfs"
+}
+####Post new user
+POST http://localhost:8000/api/v1/user/login
+Content-Type: application/json
+
+{
+    
+    "email":"pradeepdhital0sfd01dfs@gmail.com",
+    "password":"dfs"
+}
+
+### ---------transaction apis  --------------------
+### post new transaction apis
+POST http://localhost:8000/api/v1/transaction
+content-type: application/json
+
+{
+    "userId":"62d8990ce841b1f72f6ad8ca",
+    "type":"expenses",
+    "title":"shopping",
+    "amount":"333"
+}
+
+### Get all transaction for the specific user based on their Id
+GET  http://localhost:8000/api/v1/transaction
+Authorization: 62dcaf407aa07e28777fda52
+
